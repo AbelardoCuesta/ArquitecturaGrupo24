@@ -34,7 +34,7 @@ class VistaEcho(Resource):
         id = request.json["cliente"]
         fecha = str(datetime.now())[:19]
         logData = fecha + " : microservicio salida opera normalmente, respuesta exitosa al monitor " + id
-        return logData
+        return "logData", 200
 
 api.add_resource(VistaSalida, '/salida')
 api.add_resource(VistaEcho, '/echo')
