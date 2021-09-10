@@ -16,6 +16,7 @@ api = Api(app)
 
 
 class VistaSalida(Resource):
+
     def get(self):
         estadoPago = fake.pybool()
         print(estadoPago)
@@ -27,5 +28,13 @@ class VistaSalida(Resource):
         print(facturaId)
         return {"estadoPago": estadoPago, "fechaSalida": fechaSalida, "cambioDinero": cambioDinero, "facturaId": facturaId}
 
+class VistaEcho(Resource):
+
+    def get(self):
+        id = request.json["cliente"]
+        fecha = str(datetime.now())[:19]
+        logData = fecha + " : microservicio salida opera normalmente, respuesta exitosa al monitor " + id
+        return logData
 
 api.add_resource(VistaSalida, '/salida')
+api.add_resource(VistaEcho, '/echo')
