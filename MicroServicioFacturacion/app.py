@@ -26,7 +26,7 @@ class Facturacion(Resource):
         servicios=["cirugia", "examenes", "imagenes", "inyectologia", "medicina interna", "neurologia","traumatologia","hematologia","infectologia"]
 
         paciente = content.json()
-        idFactura = fake.random_int(100, 9999)
+        idFactura = fake.uuid4()
         nombrePaciente = paciente['nombre']
         direccion = paciente['direccion']
         total = fake.pricetag()

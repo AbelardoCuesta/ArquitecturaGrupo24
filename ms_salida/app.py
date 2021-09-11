@@ -18,14 +18,14 @@ api = Api(app)
 class VistaSalida(Resource):
 
     def get(self):
+        payload = {'identificacion': request.json['identificacion']}
+        content = requests.get('http://127.0.0.1:7000/facturacion', json=payload)
+        facturacion = content.json()
+        facturaId = facturacion['id']
+        total = facturacion['total']
         estadoPago = fake.pybool()
-        print(estadoPago)
         fechaSalida = str(datetime.now())[:19]
-        print(fechaSalida)
-        cambioDinero = fake.random_int(1, 999)
-        print(cambioDinero)
-        facturaId = fake.uuid4()
-        print(facturaId)
+        cambioDinero = fake.pricetag()
         return {"estadoPago": estadoPago, "fechaSalida": fechaSalida, "cambioDinero": cambioDinero, "facturaId": facturaId}
 
 class VistaEcho(Resource):
