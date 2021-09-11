@@ -1,6 +1,22 @@
 import requests
 import json
 import time
+import logging
+
+
+logger = logging.getLogger("Basic Logger")
+logger.setLevel(logging.INFO)
+
+
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.INFO)
+logger.addHandler(stream_handler)
+
+
+file_handler = logging.FileHandler("error.log")
+file_handler.setLevel(logging.ERROR)
+logger.addHandler(file_handler)
+
 
 url = "http://localhost:5000/salida"
 
@@ -16,13 +32,18 @@ for i in range(0,100):
 
 
         if (status==200):
-            print("Microservicio salida disponible", status)
+            #with open("raw_ads.json", "a") as f:
+             #   f.write(json.dumps("Microservicio salida disponible " + str(status) + '\\n'))
+            print("Microservicio salida disponible " + str(status))
+            logger.critical("Microservicio salida disponible "+ str(status))
         else:
-            print ("Microservicio salida disponible, pero backend no disponible, ", status)
+            print ("Microservicio salida disponible, pero backend no disponible, "+ str(status))
+            logger.critical("Microservicio salida disponible, pero backend no disponible, "+ str(status))
             data = json.loads(response.text)
             ads.append(data)
     except requests.exceptions.RequestException:
         print ("Microservicio salida no disponible")
+        logger.critical("Microservicio salida no disponible")
 
     data = json.loads(response.text)
     ads.append(data)
