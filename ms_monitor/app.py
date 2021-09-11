@@ -4,7 +4,7 @@ import time
 from .logger import log
 from flask import Flask
 
-url = "http://localhost:5000/salida"
+url = "http://localhost:5002/salida"
 ads = []  # this is where I am going to store the data
 response = None
 app = Flask("Flask Example Server")
@@ -18,16 +18,14 @@ for i in range(0, 100):
         status = response.status_code
 
         if status == 200:
-            log.info("Microservicio salida disponible.", **response)
-        else:
-            log.critical("Microservicio salida disponible, pero backend no disponible.", **response)
             data = json.loads(response.text)
-            ads.append(data)
+            log.info("Microservicio salida disponible.", **data)
+        else:
+
+            log.critical("Microservicio salida disponible, pero backend no disponible.")
     except requests.exceptions.RequestException:
         log.critical("Microservicio salida no disponible")
 
-    if response is not None:
-        data = json.loads(response.text)
-        ads.append(data)
-        time.sleep(3)
 
+    time.sleep(3)
+    i=i+1
