@@ -26,7 +26,9 @@ class VistaSalida(Resource):
         estadoPago = fake.pybool()
         fechaSalida = str(datetime.now())[:19]
         cambioDinero = fake.pricetag()
-        return {"estadoPago": estadoPago, "fechaSalida": fechaSalida, "cambioDinero": cambioDinero, "facturaId": facturaId}
+        fecha = str(datetime.now())[:19]
+        logData = fecha + " : microservicio salida opera normalmente, respuesta exitosa al monitor " + facturaId
+        return {"estadoPago": estadoPago, "fechaSalida": fechaSalida, "cambioDinero": cambioDinero, "facturaId": facturaId},content.status_code
 
 class VistaEcho(Resource):
 

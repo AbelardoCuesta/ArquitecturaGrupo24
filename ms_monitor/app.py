@@ -2,22 +2,27 @@ import requests
 import json
 import time
 
-url = "http://localhost:5000/echo"
+url = "http://localhost:5000/salida"
 
 
 ads = [] # this is where I am going to store the data
 
 for i in range(0,100): 
 
-    payload = {"cliente": "monitor1"}  
+    payload = {"identificacion": 146684655}
     try:
         response = requests.get(url, json=payload)
         status = response.status_code
-        print ("Microservicio disponible, ", status)
-        data = json.loads(response.text)
-        ads.append(data)
+
+
+        if (status==200):
+            print("Microservicio salida disponible", status)
+        else:
+            print ("Microservicio salida disponible, pero backend no disponible, ", status)
+            data = json.loads(response.text)
+            ads.append(data)
     except requests.exceptions.RequestException:
-        print ("Microservicio no disponible")
+        print ("Microservicio salida no disponible")
 
     data = json.loads(response.text)
     ads.append(data)
