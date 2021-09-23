@@ -34,9 +34,8 @@ class Eps(enum.Enum):
 class Paciente(Resource):
     def get(self):
         try:
-            headers_dict = {"Authorization": request.json['token_de_acceso']}
-            content = requests.get('http://127.0.0.1:5000/autorizador', headers=headers_dict)
-
+            headers = {'Authorization': request.headers['Authorization']}
+            content = requests.get('http://127.0.0.1:5000/autorizador', headers=headers)
             if (content.status_code==200):
                 id = fake.random_int(1, 9999)
                 nombre = fake.unique.name()
@@ -47,7 +46,7 @@ class Paciente(Resource):
                 return {"id" : id, "identificacion":request.json['identificacion'], "nombre": nombre, "fechaNacimiento": fechaNacimiento, "direccion":direccion, "Eps":Eps}
             else:
                 return {"mensaje": "No se obtuvo autorizacion"},500
-        except requests.exceptions.RequestException:
+        except Exception:
             return {"mensaje": "No se obtuvo autorizacion"}, 500
 
 
