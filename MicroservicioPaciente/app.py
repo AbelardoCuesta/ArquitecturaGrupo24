@@ -33,22 +33,27 @@ class Eps(enum.Enum):
 
 class Paciente(Resource):
     def get(self):
-        headers_dict = {"Authorization": request.json['token_de_acceso']}
-        content = requests.get('http://127.0.0.1:5000/autorizador', headers=headers_dict)
+        try:
+            headers_dict = {"Authorization": request.json['token_de_acceso']}
+            content = requests.get('http://127.0.0.1:5000/autorizador', headers=headers_dict)
 
-        if (content.status_code==200):
-            id = fake.random_int(1, 9999)
-            nombre = fake.unique.name()
-            fechaNacimiento=str(fake.date())
-            direccion=fake.address()
-            Epss=["Sanitas", "Sura", "Coomeva", "Famisanar", "Compensar", "Cafam","Cafesalud"]
-            Eps = random.choice(list(Epss))
-            return {"id" : id, "identificacion":request.json['identificacion'], "nombre": nombre, "fechaNacimiento": fechaNacimiento, "direccion":direccion, "Eps":Eps}
-        else:
-            return {"mensaje": "No se obtuvo autorizacion"},500
+            if (content.status_code==200):
+                id = fake.random_int(1, 9999)
+                nombre = fake.unique.name()
+                fechaNacimiento=str(fake.date())
+                direccion=fake.address()
+                Epss=["Sanitas", "Sura", "Coomeva", "Famisanar", "Compensar", "Cafam","Cafesalud"]
+                Eps = random.choice(list(Epss))
+                return {"id" : id, "identificacion":request.json['identificacion'], "nombre": nombre, "fechaNacimiento": fechaNacimiento, "direccion":direccion, "Eps":Eps}
+            else:
+                return {"mensaje": "No se obtuvo autorizacion"},500
+        except requests.exceptions.RequestException:
+            return {"mensaje": "No se obtuvo autorizacion"}, 500
+
+
     def post(self):
         payload = {'identificacion': request.json['identificacion']}
         content = requests.post('http://127.0.0.1:5000/autorizador', json=payload)
-        return {"token_de_acceso": (content.json()['token_de_acceso'])}
+        return {"mensaje":"Usted tiene credenciales como " + str(request.json['tipo_usuario']),"token_de_acceso": content.json()['token_de_acceso']}
 
 api.add_resource(Paciente, '/paciente')

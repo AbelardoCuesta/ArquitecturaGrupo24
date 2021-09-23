@@ -22,8 +22,7 @@ jwt=JWTManager(app)
 class Certificador(Resource):
     def post(self):
         token_de_acceso=create_access_token(identity=request.json['identificacion'])
-        print({"mensaje":"Usuario creado exitosamente", "token_de_acceso":token_de_acceso,"identificacion":request.json['identificacion']})
-        return {"mensaje":"Usuario creado exitosamente", "token_de_acceso":token_de_acceso,"identificacion":request.json['identificacion']}
+        return {"token_de_acceso":token_de_acceso,"identificacion":request.json['identificacion']}
 
     @jwt_required()
     def get(self):
