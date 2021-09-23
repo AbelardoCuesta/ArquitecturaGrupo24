@@ -45,9 +45,9 @@ class Paciente(Resource):
                 Eps = random.choice(list(Epss))
                 return {"id" : id, "identificacion":request.json['identificacion'], "nombre": nombre, "fechaNacimiento": fechaNacimiento, "direccion":direccion, "Eps":Eps}
             else:
-                return {"mensaje": "No se obtuvo autorizacion"},500
+                return {"mensaje": "No se obtuvo autorizacion porque el token de seguridad no es válido"},500
         except Exception:
-            return {"mensaje": "No se obtuvo autorizacion"}, 500
+            return {"mensaje": "No se obtuvo autorizacion por falta de un token de seguridad"}, 500
 
 
     def post(self):
