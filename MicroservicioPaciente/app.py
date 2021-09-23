@@ -52,8 +52,11 @@ class Paciente(Resource):
 
 
     def post(self):
-        payload = {'identificacion': request.json['identificacion']}
-        content = requests.post('http://127.0.0.1:5000/autorizador', json=payload)
-        return {"mensaje":"Usted tiene credenciales como " + str(request.json['tipo_usuario']),"token_de_acceso": content.json()['token_de_acceso']}
+        try:
+            payload = {'identificacion': request.json['identificacion']}
+            content = requests.post('http://127.0.0.1:5000/autorizador', json=payload)
+            return {"mensaje":"Registro exitoso, usted tiene credenciales como " + str(request.json['tipo_usuario']),"token_de_acceso": content.json()['token_de_acceso']}
+        except requests.exceptions.RequestException:
+            return {"mensaje": "No es posible realizar registros ahora, intente luego"}, 500
 
 api.add_resource(Paciente, '/paciente')
